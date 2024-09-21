@@ -1,40 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">  
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
     <title>Breakout Game by Aldrin Abilar</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(120deg,#1e3c72,#2a5298);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg, #1e3c72, #2a5298);
             color: #fff;
             text-align: center;
             margin-top: 100px;
         }
+
         h1 {
             font-size: 36px;
             margin-bottom: 20px 0;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             font-weight: bold;
-
         }
+
         canvas {
             background: #222;
             display: block;
             margin: 0 auto;
-            
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
+
         #breakoutCanvas {
             border-radius: 10px;
         }
+
         .button {
             margin-top: 20px;
-            background-color: #0095DD;
+            background-color: #0095dd;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -45,21 +49,18 @@
         }
 
         .button:hover {
-            background-color: #007ACC;
+            background-color: #007acc;
         }
-
-     
-     
-        
     </style>
 </head>
+
 <body>
     <h1>Breakout Game</h1>
     <h5>by Aldrin Abilar</h5>
     <canvas id="breakoutCanvas" width="480" height="320"></canvas>
-     <script>
-      const canvas = document.getElementById('breakoutCanvas');
-        const ctx = canvas.getContext('2d');
+    <script>
+        const canvas = document.getElementById("breakoutCanvas");
+        const ctx = canvas.getContext("2d");
 
         const paddleHeight = 10;
         const paddleWidth = 75;
@@ -69,7 +70,6 @@
         let y = canvas.height - 30;
         let dx = 2;
         let dy = -2;
-
 
         const ballRadius = 10;
 
@@ -99,22 +99,21 @@
         let leftPressed = false;
         let gameOver = false;
 
-        document.addEventListener('keydown', keyDownHandler, false);
-        document.addEventListener('keyup', keyUpHandler, false);
-
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
 
         function keyDownHandler(e) {
-            if (e.key === 'Right' || e.key === 'ArrowRight') {
+            if (e.key === "Right" || e.key === "ArrowRight") {
                 rightPressed = true;
-            } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+            } else if (e.key === "Left" || e.key === "ArrowLeft") {
                 leftPressed = true;
             }
         }
 
         function keyUpHandler(e) {
-            if (e.key === 'Right' || e.key === 'ArrowRight') {
+            if (e.key === "Right" || e.key === "ArrowRight") {
                 rightPressed = false;
-            } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+            } else if (e.key === "Left" || e.key === "ArrowLeft") {
                 leftPressed = false;
             }
         }
@@ -122,19 +121,24 @@
         function drawBall() {
             ctx.beginPath();
             ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-            ctx.fillStyle = '#FF5C5C';
+            ctx.fillStyle = "#FF5C5C";
             ctx.shadowBlur = 15;
-            ctx.shadowColor = '#FF0000';
+            ctx.shadowColor = "#FF0000";
             ctx.fill();
             ctx.closePath();
         }
 
         function drawPaddle() {
             ctx.beginPath();
-            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-            ctx.fillStyle = '#00CC99';
+            ctx.rect(
+                paddleX,
+                canvas.height - paddleHeight,
+                paddleWidth,
+                paddleHeight
+            );
+            ctx.fillStyle = "#00CC99";
             ctx.shadowBlur = 10;
-            ctx.shadowColor = '#006644';
+            ctx.shadowColor = "#006644";
             ctx.fill();
             ctx.closePath();
         }
@@ -143,15 +147,15 @@
             for (let c = 0; c < brickColumnCount; c++) {
                 for (let r = 0; r < brickRowCount; r++) {
                     if (bricks[c][r].status === 1) {
-                        const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
-                        const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
                         bricks[c][r].x = brickX;
                         bricks[c][r].y = brickY;
                         ctx.beginPath();
                         ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                        ctx.fillStyle = '#FFD700';
+                        ctx.fillStyle = "#FFD700";
                         ctx.shadowBlur = 10;
-                        ctx.shadowColor = '#FFD700';
+                        ctx.shadowColor = "#FFD700";
                         ctx.fill();
                         ctx.closePath();
                     }
@@ -164,7 +168,12 @@
                 for (let r = 0; r < brickRowCount; r++) {
                     let b = bricks[c][r];
                     if (b.status === 1) {
-                        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                        if (
+                            x > b.x &&
+                            x < b.x + brickWidth &&
+                            y > b.y &&
+                            y < b.y + brickHeight
+                        ) {
                             dy = -dy;
                             b.status = 0;
                         }
@@ -175,14 +184,13 @@
 
         function drawGameOver() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.font = '30px Arial';
-            ctx.fillStyle = '#FF0000';
-            ctx.textAlign = 'center';
-            ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2);
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "#FF0000";
+            ctx.textAlign = "center";
+            ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2);
             gameOver = true;
         }
         function draw() {
-
             if (gameOver) {
                 drawGameOver();
                 return;
@@ -206,7 +214,6 @@
                     dy = -dy;
                 } else {
                     gameOver = true;
-
                 }
             }
 
@@ -216,12 +223,11 @@
                 paddleX -= 7;
             }
 
-
             requestAnimationFrame(draw);
         }
-
 
         draw();
     </script>
 </body>
+
 </html>
